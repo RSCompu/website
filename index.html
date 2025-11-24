@@ -105,6 +105,11 @@
             background: var(--neon-primary); 
             box-shadow: 0 0 10px var(--neon-primary); 
         }
+        /* Style for disabled slider to show it's locked */
+        input[type="range"]:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
         
         .value-display {
             color: var(--neon-primary); 
@@ -130,6 +135,10 @@
             text-transform: uppercase;
             transition: all 0.3s;
             text-align: center;
+            /* Ensure the link inside the controls looks like a button */
+            text-decoration: none; 
+            display: block; 
+            box-sizing: border-box; 
         }
         
         /* Universal Color Shift style */
@@ -150,10 +159,6 @@
             animation: none; /* Disable previous fixed red glow */
         }
         
-        #downloads-btn {
-             animation: none !important; /* Disable red/blue blinking */
-        }
-
         @keyframes hueRotate {
             0% { 
                 filter: hue-rotate(0deg); 
@@ -176,15 +181,50 @@
             color: var(--neon-primary); /* Shifting color */
             font-weight: bold;
         }
+        
+        /* NEW: Top Right Links Container */
+        #top-right-links {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            z-index: 10;
+        }
+        
+        /* Styling for the R1ProgrammerSOF button in the top right */
+        #r1prog-top-btn {
+            padding: 10px 15px;
+            background: rgba(0,0,0,0.6);
+            border: 2px solid var(--neon-primary);
+            color: white;
+            font-size: 14px;
+            font-weight: bold;
+            text-transform: uppercase;
+            text-decoration: none;
+            border-radius: 4px;
+            cursor: pointer;
+            box-shadow: 0 0 15px var(--neon-primary);
+            transition: all 0.3s;
+            animation: hueRotate 10s infinite linear; /* Ensure the top button always glows and shifts */
+        }
+        
+        #r1prog-top-btn:hover {
+             box-shadow: 0 0 25px var(--neon-primary);
+        }
 
-        /* Side Monitor - ADDED DIMENSIONS FOR VISIBILITY */
+
+        /* Side Monitor - DOUBLED SIZE: 250px -> 500px, 150px -> 300px */
         #side-monitor {
             position: absolute;
             top: 25%;
             left: 20px;
-            width: 250px; /* Explicit width */
-            height: 150px; /* Explicit height */
+            width: 300px; /* Updated: Doubled from 250px */
+            height:200px; /* Updated: Doubled from 150px */
             z-index: 5;
+            /* Flexbox to stack elements vertically */
+            display: flex; 
+            flex-direction: column;
+            justify-content: space-between;
+            
             /* Border and shadow now use the shifting primary color */
             border: 5px solid var(--neon-dark); 
             background: var(--neon-dark);
@@ -201,16 +241,46 @@
             font-size: 10px;
         }
 
+        /* Wave Canvas - HEIGHT DOUBLED: 100px -> 200px */
         #waveCanvas {
             width: 100%;
-            height: 100px; /* Explicit height for the canvas */
+            height: 200px; /* Updated: Doubled from 100px */
+            /* Added flex-grow so it uses remaining space */
+            flex-grow: 1; 
+        }
+        
+        /* Style for the link/button at the bottom of the side monitor */
+        .monitor-footer-btn {
+            display: block; /* Make the anchor tag behave like a block element */
+            background: var(--neon-dark);
+            border: 1px solid var(--neon-secondary);
+            color: var(--neon-secondary);
+            padding: 4px;
+            margin: 5px; /* Adds margin around the link inside the monitor */
+            cursor: pointer;
+            font-family: 'Courier New', Courier, monospace;
+            font-size: 8px;
+            text-transform: uppercase;
+            transition: all 0.2s;
+            text-align: center;
+            text-decoration: none; /* Remove underline from link */
         }
 
-        /* Mobile Adjustments */
+        /* Style for active/neon effect on the downloads link */
+        .monitor-footer-btn.active {
+            border-color: var(--neon-primary); 
+            box-shadow: 0 0 5px var(--neon-primary);
+            color: white;
+            /* Using the hueRotate animation for extra visual effect */
+            animation: hueRotate 5s infinite linear; 
+        }
+
+
+        /* Mobile Adjustments - DOUBLED SIZE: 150px -> 300px, 100px -> 200px */
         @media (max-width: 600px) {
             #side-monitor {
-                width: 150px; /* Narrower for mobile */
-                height: 100px;
+                width: 300px; /* Updated: Doubled from 150px */
+                height: 200px; /* Updated: Doubled from 100px */
                 top: 100px; /* Move it down below the HUD stats */
                 left: 10px; 
             }
@@ -219,6 +289,16 @@
                 width: calc(100% - 40px);
                 right: 20px;
                 bottom: 10px;
+            }
+            
+            #top-right-links {
+                top: 20px;
+                right: 10px;
+            }
+            
+            #r1prog-top-btn {
+                font-size: 10px;
+                padding: 8px 10px;
             }
         }
     </style>
@@ -229,10 +309,25 @@
         <canvas id="cyberCanvas"></canvas>
     </div>
 
+    <!-- TOP RIGHT LINKS -->
+    <div id="top-right-links">
+         <a href="https://release-assets.githubusercontent.com/github-production-release-asset/1093807500/7c704710-00f1-4e2b-a14e-a9d5d495b1f3?sp=r&sv=2018-11-09&sr=b&spr=https&se=2025-11-24T06%3A57%3A43Z&rscd=attachment%3B+filename%3DR1Programmer.exe&rsct=application%2Foctet-stream&skoid=96c2d410-5711-43a1-aedd-ab1947aa7ab0&sktid=398a6654-997b-47e9-b12b-9515b896b4de&skt=2025-11-24T05%3A57%3A23Z&ske=2025-11-24T06%3A57%3A43Z&sks=b&skv=2018-11-09&sig=7ZYs0mrAy4VywKhIVDKiTj8rAtHBjJS7sPxi4xZ1ZyA%3D&jwt=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJnaXRodWIuY29tIiwiYXVkIjoicmVsZWFzZS1hc3NldHMuZ2l0aHVidXNlcmNvbnRlbnQuY29tIiwia2V5Ijoia2V5MSIsImV4cCI6MTc2Mzk2NzA2OSwibmJmIjoxNzYzOTY1MjY5LCJwYXRoIjoicmVsZWFzZWFzc2V0cHJvZHVjdGlvbi5ibG9iLmNvcmUud2luZG93cy5uZXQifQ.LtDUCo6r-ZegQokkwiuK7q_QXJwqKe7KEfXITzSPRXs&response-content-disposition=attachment%3B%20filename%3DR1Programmer.exe&response-content-type=application%2Foctet-stream" 
+               target="_blank" 
+               id="r1prog-top-btn" 
+               title="R1ProgrammerSOF Link">
+               R1ProgrammerSOF
+            </a>
+    </div>
+    
     <!-- SIDE MONITOR -->
     <div id="side-monitor">
-        <h4>AUX_WAVEFORM_V2</h4>
+        <h4>R1ITLAB</h4>
         <canvas id="waveCanvas"></canvas>
+        <!-- DOWNLOADS BUTTON remains in the monitor footer -->
+        <a href="https://github.com/RSCompu?tab=repositories" target="_blank" 
+           id="monitor-downloads-btn" class="monitor-footer-btn active">
+            DOWNLOADS
+        </a>
     </div>
 
     <div class="overlay"></div>
@@ -271,7 +366,7 @@
         <div class="control-group">
             <label>ROTATION SPEED</label>
             <div class="slider-container">
-                <input type="range" id="speed-slider" min="0" max="200" value="50">
+                <input type="range" id="speed-slider" min="0" max="200" value="200" disabled>
                 <span class="value-display" id="speed-val">50%</span>
             </div>
         </div>
@@ -279,24 +374,25 @@
         <div class="control-group">
             <label>RADAR SWEEP</label>
             <div class="slider-container">
-                <input type="range" id="radar-slider" min="0" max="100" value="60">
+                <input type="range" id="radar-slider" min="0" max="100" value="100" disabled>
                 <span class="value-display" id="radar-val">60%</span>
             </div>
         </div>
 
         <div class="control-group">
-            <label>DATA DENSITY</label>
+            <label>DATA DENSITY(LOCKED)</label>
             <div class="slider-container">
-                <input type="range" id="data-slider" min="0" max="100" value="40">
+                <input type="range" id="data-slider" min="0" max="100" value="100" disabled>
                 <span class="value-display" id="data-val">40%</span>
             </div>
         </div>
 
         <div class="control-group">
-            <label>NEON GLOW</label>
+            <label>NEON GLOW (LOCKED)</label>
             <div class="slider-container">
-                <input type="range" id="glow-slider" min="0" max="50" value="20">
-                <span class="value-display" id="glow-val">20</span>
+                <!-- VALUE CHANGED TO 50 AND SLIDER IS DISABLED -->
+                <input type="range" id="glow-slider" min="0" max="50" value="50" disabled>
+                <span class="value-display" id="glow-val">50</span>
             </div>
         </div>
 
@@ -307,6 +403,8 @@
             <div class="switch-btn active" id="text-btn">DATA</div>
             <div class="switch-btn active" id="downloads-btn">SYSTEM</div>
             <div class="switch-btn active" id="spectrum-btn">HUE LOCK</div>
+            
+            <!-- R1ProgrammerSOF MOVED UP TO #top-right-links -->
         </div>
     </div>
 
@@ -323,7 +421,7 @@
             rotationSpeed: 0.5,
             radarSpeed: 0.03,
             dataDensity: 0.4,
-            glowIntensity: 20,
+            glowIntensity: 50, // VALUE CHANGED TO 50 (MAX)
             showMarkers: true,
             showText: true,
             hueOffset: 298, // Start at Magenta
@@ -425,9 +523,10 @@
                     for(let i=0; i<ticks; i++) {
                         const a = this.angle + (i / ticks) * Math.PI * 2;
                         const x1 = centerX + Math.cos(a) * this.radius;
-                        const y1 = centerY + Math.sin(a) * this.radius;
+                        // FIX: Declare y1 and y2 with 'let'
+                        let y1 = centerY + Math.sin(a) * this.radius;
                         const x2 = centerX + Math.cos(a) * (this.radius + 10);
-                        const y2 = centerY + Math.sin(a) * (this.radius + 10);
+                        let y2 = centerY + Math.sin(a) * (this.radius + 10);
                         ctx.beginPath();
                         ctx.moveTo(x1, y1);
                         ctx.lineTo(x2, y2);
@@ -576,7 +675,7 @@
             waveCtx.strokeStyle = state.secondaryColor;
             waveCtx.lineWidth = 2;
             waveCtx.shadowBlur = 5;
-            ctx.shadowColor = state.secondaryColor; // Use ctx for shadow to affect only the waveform sweep line, not fillRect
+            waveCtx.shadowColor = state.secondaryColor; // Use waveCtx for shadow
 
             const freq = 0.05;
             const amp = 40; 
@@ -707,11 +806,7 @@
                 state.dataDensity = e.target.value / 100;
                 document.getElementById('data-val').textContent = e.target.value + '%';
             });
-            document.getElementById('glow-slider').addEventListener('input', (e) => {
-                state.glowIntensity = parseInt(e.target.value);
-                document.getElementById('glow-val').textContent = e.target.value;
-            });
-
+            
             // Toggles
             document.getElementById('markers-btn').addEventListener('click', (e) => {
                 state.showMarkers = !state.showMarkers;
